@@ -1,10 +1,14 @@
 import React from 'react'
-import Invoice from './components/Invoice'
+import { Route, Routes } from 'react-router-dom'
+import CreateInvoice from './pages/CreateInvoice'
+
 
 function App() {
   return (
-    <div className='bg-slate-200 min-h-screen p-2'>
-      <Invoice />
+    <div>
+      <Routes>
+        <Route path='/' element={<CreateInvoice />}/>
+      </Routes>
     </div>
   )
 }
