@@ -1,10 +1,18 @@
 import React, { useState } from 'react'
 
 function CreateInvoice() {
-    const [items, setItems] = useState([{itemname: "", itemcode: "", partno: "", hsncode: "", Qty: 1, unitrate: 0}])
+    const [items, setItems] = useState([{itemname: "", itemcode: "", partno: "", hsncode: "", qty: 1, unitrate: 0}])
+
+
+    const handlechange = (index, e) =>{
+        const {name, value} = e.target;
+        const updateItems = [...items]
+        updateItems[index][name] = value
+        setItems(updateItems)
+    }
 
     const addItem = () =>{
-        setItems([...items, {itemname: "", itemcode: "", partno: "", hsncode: "", Qty: 1, unitrate: 0}])
+        setItems([...items, {itemname: "", itemcode: "", partno: "", hsncode: "", qty: 1, unitrate: 0}])
     }
 
     const deleteItem = (index) =>{
@@ -12,8 +20,12 @@ function CreateInvoice() {
         setItems(update)
     }
 
+    const printbtn = () => {
+        console.log(items)
+    }
+
   return (
-    <div className='bg-slate-200 w-full min-h-screen p-4'>
+    <div className='bg-slate-200 w-full min-h-screen p-4 relative'>
         <div className='text-center mb-3'>
             <h1 className='text-xl font-bold'>Invoice</h1>
         </div>
@@ -47,19 +59,23 @@ function CreateInvoice() {
                         {items.map((item, idx)=>(
                         <tr key={idx}>
                             <td className="border text-center">{idx + 1}</td>
-                            <td className="border px-2 py-1"><input type='text' className='outline-none w-20' /></td>
-                            <td className="border px-2 py-1"><input type='text' className='outline-none w-20' /></td>
-                            <td className="border px-2 py-1"><input type='text' className='outline-none w-20' /></td>
-                            <td className="border px-2 py-1"><input type='text' className='outline-none w-20' /></td>
-                            <td className="border px-2 py-1"><input type='text' className='outline-none w-20' /></td>
-                            <td className="border px-2 py-1"><input type='text' className='outline-none w-20' /></td>
-                            <td className="border px-2 py-1"><input className='outline-none w-20' value={(item.qty * item.unitrate) || ""} /></td>
+                            <td className="border px-2 py-1"><input type='text' className='outline-none w-20' name = 'itemname' value = {item.itemname} onChange={(e)=>handlechange(idx, e)}/></td>
+                            <td className="border px-2 py-1"><input type='text' className='outline-none w-20' name = 'itemcode' value = {item.itemcode} onChange={(e)=>handlechange(idx, e)}/></td>
+                            <td className="border px-2 py-1"><input type='text' className='outline-none w-20' name = 'partno' value = {item.partno} onChange={(e)=>handlechange(idx, e)}/></td>
+                            <td className="border px-2 py-1"><input type='text' className='outline-none w-20' name = 'hsncode' value = {item.hsncode} onChange={(e)=>handlechange(idx, e)}/></td>
+                            <td className="border px-2 py-1"><input type='number' className='outline-none w-20' name = 'qty' value = {item.qty} onChange={(e)=>handlechange(idx, e)}/></td>
+                            <td className="border px-2 py-1"><input type='number' className='outline-none w-20' name = 'unitrate' value = {item.unitrate} onChange={(e)=>handlechange(idx, e)}/></td>
+                            <td className="border px-2 py-1"><input className='outline-none w-20' value={(item.qty * item.unitrate) || ""} readOnly/></td>
                             <td className="border px-2 py-1 text-center"><button className='bg-cyan-400 px-2 py-1 rounded-lg text-white' onClick={addItem}>Add Item</button></td>
                             <td className="border px-2 py-1 text-center"><button className='bg-cyan-400 px-2 py-1 rounded-lg text-white' onClick={()=>deleteItem(idx)}>Delete Item</button></td>
                         </tr>
-                        ))}
+                        ))} 
                 </tbody>
             </table>
+        </div>
+        <div className='text-center fixed bottom-3 left-0 right-0 p-2'>
+            <hr className='border-neutral-400 mb-2'/>
+            <button className='w-24 bg-green-600 h-14 rounded-lg font-bold text-xl text-white uppercase' onClick={printbtn}>print</button>
         </div>
     </div>
   )
